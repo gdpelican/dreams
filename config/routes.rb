@@ -23,6 +23,12 @@ Rails.application.routes.draw do
   get '/pages/:page' => 'pages#show'
   get '/me' => 'users#me'
   get '/howcanihelp' => 'howcanihelp#index'
-  
+
+  namespace 'api' do
+    resources :camps, only: [:show, :index], format: :json
+    resources :grants, only: [:show, :index], format: :json
+    # TODO: add more resource types to the api
+  end
+
   get '*unmatched_route' => 'application#not_found'
 end

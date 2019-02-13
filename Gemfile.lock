@@ -175,6 +175,17 @@ GEM
     jquery-ui-rails (5.0.5)
       railties (>= 3.2.16)
     json (1.8.6)
+    jsonapi-deserializable (0.2.0)
+    jsonapi-parser (0.1.1)
+    jsonapi-rails (0.3.1)
+      jsonapi-parser (~> 0.1.0)
+      jsonapi-rb (~> 0.5.0)
+    jsonapi-rb (0.5.0)
+      jsonapi-deserializable (~> 0.2.0)
+      jsonapi-serializable (~> 0.3.0)
+    jsonapi-renderer (0.2.0)
+    jsonapi-serializable (0.3.0)
+      jsonapi-renderer (~> 0.2.0)
     jwt (1.5.2)
     kaminari (0.16.3)
       actionpack (>= 3.0.0)
@@ -405,6 +416,7 @@ DEPENDENCIES
   jbuilder (~> 2.0)
   jquery-rails
   jquery-ui-rails
+  jsonapi-rails
   kaminari
   kaminari-bootstrap
   newrelic_rpm (~> 6.0.0)

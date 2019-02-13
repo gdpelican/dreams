@@ -13,6 +13,9 @@ gem 'coffee-rails', '~> 4.1.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 
+# serialize resources to the api
+gem 'jsonapi-rails'
+
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 # Jquery ui
