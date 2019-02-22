@@ -15,13 +15,21 @@ class ApplicationController < ActionController::Base
     response.headers.delete "X-Frame-Options"
     render_something
   end
-  
+
   protected
+
+  def current_user
+    @current_user ||= keycloak_user || super
+  end
+
+  def keycloak_user
+    User.find_by(keycloak_id: Keycloak::Helper.current_user_id(request.env))
+  end
 
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up, keys: [:ticket_id])
   end
-  
+
   # Before every request, we set the locale, from the specified or detected settings, or from the cookie
   def set_locale
     if language_change_necessary?
