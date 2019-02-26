@@ -37,6 +37,9 @@ gem 'haml'
 # Enable Facebook authentication.
 gem 'omniauth-facebook'
 
+# Enable Keycloak authentication.
+gem 'omniauth_openid_connect'
+
 # Admin backend
 gem 'activeadmin', github: 'activeadmin'
 gem 'cancan' # or cancancan
@@ -86,7 +89,6 @@ gem 'best_in_place', '~> 3.0.1'
 # Tag dreams
 gem 'acts-as-taggable-on', '~> 4.0'
 
-gem 'keycloak-api-rails'
 gem 'dotenv'
 
 group :production do

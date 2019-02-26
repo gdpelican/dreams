@@ -18,14 +18,6 @@ class ApplicationController < ActionController::Base
 
   protected
 
-  def current_user
-    @current_user ||= keycloak_user || super
-  end
-
-  def keycloak_user
-    User.find_by(keycloak_id: Keycloak::Helper.current_user_id(request.env))
-  end
-
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up, keys: [:ticket_id])
   end

@@ -243,6 +243,20 @@ Devise.setup do |config|
   config.omniauth :facebook, Rails.application.secrets.facebook_app_id,
     Rails.application.secrets.facebook_app_secret
 
+  config.omniauth :openid_connect, {
+    name: :keycloak,
+    scope: [:email, :profile],
+    response_type: :code,
+    discovery: true,
+    uid_field: :username,
+    issuer: ENV["KEYCLOAK_ISSUER"],
+    client_options: {
+      identifer:    ENV["KEYCLOAK_REALM"],
+      secret:       ENV["KEYCLOAK_SECRET"],
+      redirect_uri: ENV["KEYCLOAK_REDIRECT"]
+    }
+  }
+
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
   # change the failure app, you can configure them inside the config.warden block.

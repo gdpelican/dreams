@@ -1,16 +1,23 @@
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
-  # This is straight outta the Rails Girls tutorial on adding Facebook auth :)
-  # Thanks Rails Girls!
+  def keycloak
+    from_omniauth :keycloak
+  end
 
   def facebook
+    from_omniauth :facebook
+  end
+
+  private
+
+  def from_omniauth(provider)
     @user = User.from_omniauth(request.env["omniauth.auth"])
 
     if @user.persisted?
-      sign_in_and_redirect @user, :event => :authentication
-      set_flash_message(:notice, :success, :kind => "Facebook") if is_navigational_format?
+      sign_in_and_redirect @user, event: :authentication
+      set_flash_message(:notice, :success, kind: provider.humanize) if is_navigational_format?
     else
-      session["devise.facebook_data"] = request.env["omniauth.auth"]
+      session["devise.#{provider}_data"] = request.env["omniauth.auth"]
       redirect_to new_user_registration_url
     end
   end
