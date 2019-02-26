@@ -4,6 +4,8 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     from_omniauth :keycloak
   end
 
+  # TODO: regression test login with facebook to make sure it still works
+  # (or just tear it out, it was commented out anyway)
   def facebook
     from_omniauth :facebook
   end

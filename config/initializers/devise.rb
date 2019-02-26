@@ -243,6 +243,36 @@ Devise.setup do |config|
   config.omniauth :facebook, Rails.application.secrets.facebook_app_id,
     Rails.application.secrets.facebook_app_secret
 
+  # TODO: get this keycloak configuration going!
+  # It's actually quite close now; here are the steps I followed and the troubles I encountered:
+  # Set up a local keycloak instance:
+  # I had a decent time following the instructions here (https://www.keycloak.org/docs/3.2/server_installation/topics/installation.html)
+  # and booting up a server on localhost:8080 in standalone mode
+
+  # From there, I created a Realm, a user, and an OpenID client as laid out here (https://www.keycloak.org/docs/3.2/server_admin/topics/initialization.html)
+  # From there, you'll want to populate a few ENV variables in a .env file in your root directory
+  # Here are some examples ones:
+
+  # KEYCLOAK_REDIRECT=/auth/keycloak/callback
+  # KEYCLOAK_REALM=<your realm name>
+  # KEYCLOAK_ISSUER=http://localhost:8080/auth/realms/<your realm name>
+  # KEYCLOAK_SECRET=<your realm secret>
+  # ^^ get this by visiting your openID client -> Installation -> Keycloak OIDC JSON),
+  # it'll be under 'credentials' -> 'secret' in that json file.
+
+  # Let me know if you have trouble with this step!
+
+  # From there, you _should_ be able to auth a user with your newly created realm.
+  # However (!) it was not working for me, instead failing with a cryptic
+  # 'identifier required' error when visiting '/users/auth/keycloak'
+
+  # You'll have to debug this from here; my suspicion at the moment is that the
+  # options below are not being passed correctly down to omniauth (this matches
+  # the documentation given by the openid_connect gem, but doesn't match the
+  # format of the facebook call above, for instance)
+
+  # In any case, gooood luck! Once that issue is sorted, you should be much closer
+  # to being able to sign up and sign in using any given Keycloak provider.
   config.omniauth :openid_connect, {
     name: :keycloak,
     scope: [:email, :profile],

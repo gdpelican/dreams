@@ -1,9 +1,11 @@
 require 'concerns/RegistrationValidation'
 
 class User < ActiveRecord::Base
-  include RegistrationValidation  
+  include RegistrationValidation
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
+  # TODO: currently this will display both facebook and openid links to login;
+  # if we want to take out facebook, we want to do it here.
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
          :omniauthable, :omniauth_providers => [:facebook, :openid_connect]
@@ -15,15 +17,14 @@ class User < ActiveRecord::Base
 
   schema_validations whitelist: [:id, :created_at, :updated_at, :encrypted_password]
 
-  # Again, from Rails Girls tutorial on Facebook auth.
-  # Used for handling the facebook auth callback.
-
+  # TODO: Ensure that this method works okay for Keycloak registrations as well;
+  # I believe the email should come through just fine, but will require a little
+  # testing to be sure.
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
       user.email = auth.info.email
       user.password = Devise.friendly_token[0,20]
-      #user.name = auth.info.name # We don't persist usernames to the DB.
     end
   end
-  
+
 end
