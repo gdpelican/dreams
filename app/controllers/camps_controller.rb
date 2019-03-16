@@ -23,16 +23,15 @@ class CampsController < ApplicationController
   def create
     @camp = Camp.new(camp_params.merge(creator: current_user))
 
-    if create_camp
-      flash[:notice] = t('created_new_dream')
-      redirect_to edit_camp_path(id: @camp.id)
+    if @camp.save
+      SaveToDrive.new(@camp).perform if app_setting('google_drive_integration')
+      flash[:notice] = t(:created_new_dream)
+      redirect_to edit_camp_path(@camp)
     else
       flash.now[:notice] = "#{t:errors_str}: #{@camp.errors.full_messages.uniq.join(', ')}"
       render :new
     end
   end
-
-  # Toggle granting
 
   def toggle_granting
     @camp.toggle!(:grantingtoggle)
@@ -155,21 +154,6 @@ class CampsController < ApplicationController
 
   def failure_path
     camp_path(@camp)
-  end
-
-  def create_camp
-    Camp.transaction do
-      @camp.save!
-      if app_setting('google_drive_integration') and ENV['GOOGLE_APPS_SCRIPT'].present?
-        response = NewDreamAppsScript::createNewDreamFolder(@camp.creator.email, @camp.id, @camp.name)
-        @camp.google_drive_folder_path = response['id']
-        @camp.google_drive_budget_file_path = response['budget']
-        @camp.save!
-      end
-    end
-    true
-  rescue ActiveRecord::RecordInvalid
-    false
   end
 
   def load_lang_detector

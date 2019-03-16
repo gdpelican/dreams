@@ -22,7 +22,5 @@ module Firestarter
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     Rails.application.config.x.firestarter_settings = config_for(:firestarter_settings)
-
-    config.autoload_paths += Dir["#{config.root}/lib/googleAppsScript/**/"]
   end
 end
