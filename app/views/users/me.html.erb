@@ -22,7 +22,7 @@
             <% end %>
           </ul>
 
-          <% if @memberships.exists? %>
+          <% if @memberships.any? %>
             <p><b><%=t :cocreators_list_guidetext %></b></p>
 
             <% @memberships.each do |member| %>
