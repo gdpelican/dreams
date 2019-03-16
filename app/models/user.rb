@@ -1,11 +1,6 @@
-require 'concerns/RegistrationValidation'
-
-class User < ActiveRecord::Base
+class User < ApplicationRecord
+  extend AppSettings
   include RegistrationValidation
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable and :omniauthable
-  # TODO: currently this will display both facebook and openid links to login;
-  # if we want to take out facebook, we want to do it here.
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
          :omniauthable, :omniauth_providers => [:facebook, :openid_connect]
@@ -26,5 +21,4 @@ class User < ActiveRecord::Base
       user.password = Devise.friendly_token[0,20]
     end
   end
-
 end
